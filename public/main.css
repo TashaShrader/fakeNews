@@ -1,0 +1,30 @@
+.header {
+    text-align: center;
+    font-size: 30px;
+}
+
+#buttons{
+    text-align: center;
+ margin-bottom: 10px;
+}
+#scrape {
+margin-right: 10px;
+padding: 10px;
+font-size: 20px;
+}
+
+#delete {
+    padding: 10px;
+    font-size: 20px;
+}
+
+#results {
+    width: 75%;
+    background-color: grey;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
