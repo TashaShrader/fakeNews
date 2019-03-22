@@ -1,5 +1,5 @@
 var express = require("express");
-var mongojs = require("mongojs");
+//var mongojs = require("mongojs");
 
 var cheerio = require("cheerio");
 var axios = require("axios");
@@ -11,14 +11,12 @@ var app = express();
 app.use(express.static("public"));
 
 // Save the URL of our database as well as the name of our collection
-var databaseUrl = "news";
-var collections = ["scrapedData"];
+// var databaseUrl = "news";
+// var collections = ["scrapedData"];
 
-// Use mongojs to hook the database to the db variable
-var db = mongojs(databaseUrl, collections);
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-
-//var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+mongoose.connect(MONGODB_URI);
 
 
 //Routes
@@ -32,12 +30,12 @@ app.get("/scrape", (req, res) => {
     $("div.content-meta__headline__wrapper").each(function (i, element) {
 
       var title = $(element).find("h6").text();
-       var link = $(element).find("a.js_curation-click").attr("href");
-     // var img = $(element).find("a.js_curation-click").find("span.image-container--desktop-image").find("img").attr("data-src");
+      var link = $(element).find("a.js_curation-click").attr("href");
+      // var img = $(element).find("a.js_curation-click").find("span.image-container--desktop-image").find("img").attr("data-src");
       const scrape = {
         title: title,
-     link:link,
-      //  img: img,
+        link: link,
+        //  img: img,
       }
 
       db.scrapedData.insert(scrape, function (err, data) { });
@@ -51,8 +49,8 @@ app.get("/scrape", (req, res) => {
 
 app.get("/articles", (req, res) => {
   db.scrapedData.find({})
-.then(scrapedData => res.json(scrapedData))
- 
+    .then(scrapedData => res.json(scrapedData))
+
 });
 
 // app.get("/articles/:id", (req,res) => {
